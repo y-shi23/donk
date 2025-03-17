@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  background-color: #1a1a1a;
+  color: rgba(255, 255, 255, 0.87);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@layer components {
+  .hero-section {
+    @apply h-screen w-screen flex items-center justify-center relative overflow-hidden;
+  }
+  
+  .section-title {
+    @apply text-3xl sm:text-4xl md:text-5xl font-bold mb-6 md:mb-8 text-center;
+  }
+  
+  .stats-card {
+    @apply bg-secondary rounded-lg p-4 md:p-6 shadow-lg relative overflow-hidden transition-transform duration-300;
+  }
+
+  .stats-card:hover {
+    @apply transform -translate-y-2 shadow-xl;
+  }
+
+  .stats-card .stats-content {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    @apply bg-accent/5 rounded p-2 hover:bg-accent/10 transition-colors duration-300;
+  }
+  
+  .stats-card .stats-content::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgb(99 102 241 / 0.1);
+    transition: width 0.3s ease-out;
+  }
+
+  .stats-card .stats-content:hover::before {
+    width: 100%;
+  }
+
+  .stats-card .border:hover::before {
+    width: 100%;
+  }
+  
+  .card {
+    @apply bg-secondary rounded-lg p-4 md:p-6 shadow-lg relative overflow-hidden transition-all duration-300;
+  }
+
+  .card:hover {
+    @apply shadow-xl;
+  }
+
+  .card:hover::before {
+    @apply w-full;
+  }
+
+  .card::before {
+    content: '';
+    @apply absolute inset-0 w-0 h-full bg-accent/10 transition-all duration-500 ease-out;
+  }
+  
+  .btn {
+    @apply px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold transition-all duration-300;
+  }
+  
+  .btn-primary {
+    @apply btn bg-accent hover:bg-opacity-80 text-white;
+  }
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+@keyframes ripple-1 {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes ripple-2 {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes ripple-3 {
+  0% {
+    transform: scale(1);
+    opacity: 0.1;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+.animate-ripple-1 {
+  animation: ripple-1 2s infinite;
+}
+
+.animate-ripple-2 {
+  animation: ripple-2 2s infinite 0.3s;
+}
+
+.animate-ripple-3 {
+  animation: ripple-3 2s infinite 0.6s;
+}
