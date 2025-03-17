@@ -198,8 +198,7 @@ const Home = () => {
                     autoPlay
                     muted={isMuted}
                     playsInline
-                    controls
-                    controlsList="nodownload"
+                    nocontrols
                     style={{ display: currentVideoIndex === index ? 'block' : 'none' }}
                     onEnded={() => setCurrentVideoIndex((prev) => (prev + 1) % carouselVideos.length)}
                   />
