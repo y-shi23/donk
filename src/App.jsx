@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaTrophy, FaChartLine, FaPlay } from 'react-icons/fa';
-import { BsCamera, BsPlayCircle } from 'react-icons/bs';
+import { BsCamera, BsPlayCircle, BsPauseCircle } from 'react-icons/bs';
 import { carouselVideos, highlightVideos } from './data/videos';
 import Gallery from './components/Gallery';
 import useTypewriter from './hooks/useTypewriter';
@@ -17,6 +17,7 @@ const Home = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [playingHighlightId, setPlayingHighlightId] = useState(null);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -234,28 +235,74 @@ const Home = () => {
             transition={{ duration: 1.2, staggerChildren: 0.3 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[2000px] mx-auto"
           >
-            {highlightVideos.map((video) => (
-              <motion.div
-                key={video.id}
-                className="card overflow-hidden"
-                whileHover={{ scale: 1.03, y: -10 }}
-                transition={{ duration: 0.4 }}
-              >
-                <div className="relative bg-gray-800 mb-4 group">
-                  <video
-                    src={video.url}
-                    className="w-full h-auto object-contain cursor-pointer"
-                    controls
-                    controlsList="nodownload"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <BsPlayCircle className="text-white text-5xl" />
+            {highlightVideos.map((video) => {
+              const isPlaying = playingHighlightId === video.id;
+
+              return (
+                <motion.div
+                  key={video.id}
+                  className="card overflow-hidden"
+                  whileHover={{ scale: 1.03, y: -10 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <div className="relative bg-gray-800 mb-4 group">
+                    <video
+                      src={video.url}
+                      className="w-full h-auto object-contain cursor-pointer"
+                      controls
+                      controlsList="nodownload"
+                      onPlay={() => setPlayingHighlightId(video.id)}
+                      onPause={() =>
+                        setPlayingHighlightId((current) => (current === video.id ? null : current))
+                      }
+                      onEnded={() =>
+                        setPlayingHighlightId((current) => (current === video.id ? null : current))
+                      }
+                    />
+                    <AnimatePresence initial={false} mode="wait">
+                      {isPlaying ? (
+                        <motion.div
+                          key="pause"
+                          initial={{ opacity: 0, y: 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 12 }}
+                          transition={{ duration: 0.25, ease: 'easeOut' }}
+                          className="absolute inset-0 flex justify-end items-end p-4 pointer-events-none"
+                        >
+                          <motion.span
+                            initial={{ scale: 0.85 }}
+                            animate={{ scale: 1, rotate: 0 }}
+                            transition={{ duration: 0.25, ease: 'easeOut' }}
+                            className="text-white/90 drop-shadow-lg"
+                          >
+                            <BsPauseCircle className="text-4xl md:text-5xl" />
+                          </motion.span>
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="play"
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          transition={{ duration: 0.25, ease: 'easeOut' }}
+                          className="absolute inset-0 flex items-center justify-center bg-black/50 pointer-events-none"
+                        >
+                          <motion.span
+                            animate={{ scale: [1, 1.1, 1] }}
+                            transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
+                            className="text-white drop-shadow-lg"
+                          >
+                            <BsPlayCircle className="text-5xl" />
+                          </motion.span>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-                </div>
-                <h3 className="text-xl font-bold mb-2">{video.title}</h3>
-                <p className="text-gray-300">{video.description}</p>
-              </motion.div>
-            ))}
+                  <h3 className="text-xl font-bold mb-2">{video.title}</h3>
+                  <p className="text-gray-300">{video.description}</p>
+                </motion.div>
+              );
+            })}
           </motion.div>
         </div>
       </section>

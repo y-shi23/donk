@@ -25,7 +25,7 @@ body {
 
 @layer components {
   .hero-section {
-    @apply h-screen w-screen flex items-center justify-center relative overflow-hidden;
+    @apply min-h-screen w-full flex items-center justify-center relative overflow-hidden;
   }
   
   .section-title {
